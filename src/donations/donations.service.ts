@@ -39,4 +39,16 @@ export class DonationsService {
 
         return { donationId: donation.id, authorizationUrl };
     }
+
+    async findMyDonations(donorId: string) {
+        return this.prisma.donation.findMany({
+            where: { donorId },
+            orderBy: { createdAt: 'desc' },
+            include: {
+                campaign: {
+                    select: { id: true, title: true, status: true },
+                },
+            },
+        });
+    }
 }

@@ -9,6 +9,7 @@ import { CampaignsModule } from './campaigns/campaigns.module';
 import { OrganizationsModule } from './organizations/organizations.module';
 import { DonationsModule } from './donations/donations.module';
 import { PaymentsModule } from './payments/payments.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { PaymentsModule } from './payments/payments.module';
     OrganizationsModule,
     DonationsModule,
     PaymentsModule,
+    NotificationsModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: AuthGuard },
