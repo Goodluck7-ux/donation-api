@@ -74,10 +74,20 @@ model Organization {
   campaigns     Campaign[]
 }
 
+enum CampaignCategory {
+  EDUCATION
+  CLEAN_WATER
+  ENVIRONMENT
+  HEALTH
+  EMERGENCY_RELIEF
+}
+
 model Campaign {
   id             String          @id @default(uuid())
   title          String
   description    String
+  imageUrl       String?
+  category       CampaignCategory @default(EDUCATION)
   status         CampaignStatus  @default(DRAFT)
   goalAmount     Decimal         @db.Decimal(12, 2)
   currentAmount  Decimal         @default(0) @db.Decimal(12, 2)
@@ -94,21 +104,26 @@ model Campaign {
   events         CampaignEvent[]
 }
 
+
 model Donation {
   id           String         @id @default(uuid())
   amount       Decimal        @db.Decimal(12, 2)
   status       DonationStatus @default(PENDING)
+  email        String         // always present — guest or registered
+  donorName    String?        // only set for guest donations (display name)
+  anonymous    Boolean        @default(false)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
 
-  donor        User           @relation(fields: [donorId], references: [id])
-  donorId      String
+  donor        User?          @relation(fields: [donorId], references: [id])
+  donorId      String?        // now optional — null means guest donation
 
   campaign     Campaign       @relation(fields: [campaignId], references: [id])
   campaignId   String
 
   payment      Payment?
 }
+
 
 model Payment {
   id                String        @id @default(uuid())

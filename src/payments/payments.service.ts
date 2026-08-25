@@ -14,8 +14,9 @@ export class PaymentsService {
             },
             body: JSON.stringify({
                 email,
-                amount: Math.round(amount * 100), // Paystack expects kobo (amount x 100), never decimals
+                amount: Math.round(amount * 100),
                 metadata: { donationId },
+                callback_url: `${process.env.FRONTEND_URL}/donate/success`,
             }),
         });
 

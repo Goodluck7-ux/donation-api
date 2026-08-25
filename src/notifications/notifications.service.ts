@@ -1,16 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { InjectQueue } from '@nestjs/bullmq';
-import { Queue } from 'bullmq';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class NotificationsService {
-    constructor(@InjectQueue('notifications') private readonly notificationsQueue: Queue) { }
+  private readonly logger = new Logger(NotificationsService.name);
 
-    async queueDonationConfirmed(donorEmail: string, campaignTitle: string, amount: number) {
-        await this.notificationsQueue.add('donation-confirmed', {
-            donorEmail,
-            campaignTitle,
-            amount,
-        });
-    }
+  async queueDonationConfirmed(donorEmail: string, campaignTitle: string, amount: number) {
+    // Redis queue temporarily disabled — real donor/admin emails still send directly via Resend
+    this.logger.log(`(notification queue skipped) Would have queued: ${donorEmail} — ${campaignTitle} — ₦${amount}`);
+  }
 }

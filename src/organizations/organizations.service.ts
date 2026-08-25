@@ -25,4 +25,8 @@ export class OrganizationsService {
         if (!org) throw new NotFoundException('Organization not found');
         return org;
     }
+    
+    async findAll() {
+        return this.prisma.organization.findMany({ orderBy: { createdAt: 'desc' } });
+    }
 }

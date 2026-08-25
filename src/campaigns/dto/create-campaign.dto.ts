@@ -1,4 +1,5 @@
-import { IsString, IsNumber, Min, MaxLength } from 'class-validator';
+import { IsString, IsNumber, Min, MaxLength, IsEnum, IsOptional } from 'class-validator';
+import { CampaignCategory } from '../../../generated/prisma';
 
 export class CreateCampaignDto {
     @IsString()
@@ -14,4 +15,11 @@ export class CreateCampaignDto {
 
     @IsString()
     organizationId!: string;
+
+    @IsEnum(CampaignCategory)
+    category!: CampaignCategory;
+
+    @IsString()
+    @IsOptional()
+    imageUrl?: string;
 }

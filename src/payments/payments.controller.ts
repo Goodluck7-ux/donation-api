@@ -5,6 +5,7 @@ import * as crypto from 'crypto';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotificationsService } from '../notifications/notifications.service';
+import { sendEmail } from 'src/common/email';
 
 @Controller('payments')
 export class PaymentsController {
@@ -87,10 +88,21 @@ export class PaymentsController {
 
         // Send a notification to the donor — only if this call actually confirmed something new
         if (donation) {
-            const donor = await this.prisma.user.findUnique({ where: { id: donation.donorId } });
             const campaign = await this.prisma.campaign.findUnique({ where: { id: donation.campaignId } });
-            if (donor && campaign) {
-                await this.notificationsService.queueDonationConfirmed(donor.email, campaign.title, Number(donation.amount));
+            if (campaign) {
+                await this.notificationsService.queueDonationConfirmed(donation.email, campaign.title, Number(donation.amount));
+
+                await sendEmail({
+                    to: donation.email,
+                    subject: 'Thank you for your donation',
+                    html: `<p>Hi ${donation.donorName ?? 'there'},</p><p>Your donation of ₦${donation.amount} to <strong>${campaign.title}</strong> has been confirmed. Thank you for your generosity.</p>`,
+                });
+
+                await sendEmail({
+                    to: process.env.ADMIN_NOTIFICATION_EMAIL as string,
+                    subject: `New donation: ₦${donation.amount} to ${campaign.title}`,
+                    html: `<p>${donation.donorName ?? 'A donor'} (${donation.email}) donated ₦${donation.amount} to "${campaign.title}".</p>`,
+                });
             }
         }
     }
