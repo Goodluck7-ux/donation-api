@@ -10,3 +10,5 @@ import { auth } from './auth.config';
   providers: [AuthService],
 })
 export class AuthModule {}
+
+//let railway check this file to configure dist
