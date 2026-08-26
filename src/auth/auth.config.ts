@@ -2,7 +2,7 @@ import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { PrismaClient } from '../../generated/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { sendEmail } from 'src/common/email';
+import { sendEmail } from '../common/email';
 
 const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL as string,
