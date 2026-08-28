@@ -11,9 +11,9 @@ setDefaultResultOrder('ipv4first');
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bodyParser: false });
   app.enableCors({
-    origin: process.env.FRONTEND_URL ?? 'http://localhost:3001',
+    origin: (process.env.FRONTEND_URL ?? 'http://localhost:3001').replace(/\/$/, ''),
     credentials: true,
-});
+  });
 
   app.use(
     express.json({
