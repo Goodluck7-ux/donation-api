@@ -42,6 +42,11 @@ export class CampaignsController {
     return this.campaignsService.findOne(id);
   }
 
+  @Get('public/stats')
+  async getPublicStats() {
+    return this.campaignsService.getPublicStats();
+  }
+
   @Post()
   @Roles('CAMPAIGN_MANAGER', 'ORG_ADMIN', 'PLATFORM_ADMIN')
   @UseGuards(RolesGuard)

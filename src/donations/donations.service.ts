@@ -103,4 +103,26 @@ export class DonationsService {
 
         return { claimedCount: result.count };
     }
+
+    async getRecentPublicDonations() {
+        const donations = await this.prisma.donation.findMany({
+            where: { status: 'CONFIRMED' },
+            orderBy: { createdAt: 'desc' },
+            take: 8,
+            include: {
+                campaign: { select: { title: true } },
+                donor: { select: { name: true } },
+            },
+        });
+
+        return donations.map((d) => ({
+            id: d.id,
+            name: d.anonymous
+                ? 'Anonymous'
+                : (d.donorName ?? d.donor?.name ?? 'Anonymous').split(' ')[0],
+            amount: d.amount,
+            campaignTitle: d.campaign.title,
+            createdAt: d.createdAt,
+        }));
+    }
 }

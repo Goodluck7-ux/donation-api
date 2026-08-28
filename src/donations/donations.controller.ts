@@ -46,5 +46,10 @@ export class DonationsController {
     return this.donationsService.confirmClaim(token);
   }
 
+  @Get('public/recent')
+  async getRecentPublicDonations() {
+    return this.donationsService.getRecentPublicDonations();
+  }
+
 
 }

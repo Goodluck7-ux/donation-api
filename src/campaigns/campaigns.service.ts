@@ -112,4 +112,21 @@ export class CampaignsService {
             orderBy: { createdAt: 'desc' },
         });
     }
+
+    async getPublicStats() {
+        const [totalRaisedResult, activeCauses, distinctDonors] = await Promise.all([
+            this.prisma.campaign.aggregate({ _sum: { currentAmount: true } }),
+            this.prisma.campaign.count({ where: { status: 'ACTIVE' } }),
+            this.prisma.donation.groupBy({
+                by: ['email'],
+                where: { status: 'CONFIRMED' },
+            }),
+        ]);
+
+        return {
+            totalRaised: totalRaisedResult._sum.currentAmount ?? 0,
+            activeCauses,
+            totalDonors: distinctDonors.length,
+        };
+    }
 }
