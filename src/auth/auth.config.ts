@@ -22,6 +22,7 @@ export const auth = betterAuth({
 
     emailAndPassword: {
         enabled: true,
+        requireEmailVerification: true,
         sendResetPassword: async ({ user, url }) => {
             await sendEmail({
                 to: user.email,
@@ -32,11 +33,13 @@ export const auth = betterAuth({
     },
 
     emailVerification: {
+        sendOnSignUp: true,
+        autoSignInAfterVerification: true,
         sendVerificationEmail: async ({ user, url }) => {
             await sendEmail({
                 to: user.email,
                 subject: 'Verify your email',
-                html: `Click <a href="${url}">here</a> to verify your email.`,
+                html: `Click <a href="${url}">here</a> to verify your email and activate your account.`,
             });
         },
     },
