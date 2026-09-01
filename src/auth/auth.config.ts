@@ -8,7 +8,7 @@ const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL as string,
 });
 const prisma = new PrismaClient({ adapter });
-
+  
 function requireEnv(key: string): string {
     const value = process.env[key];
     if (!value) {

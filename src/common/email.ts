@@ -4,7 +4,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
   await resend.emails.send({
-    from: 'Donation Platform <onboarding@resend.dev>', 
+    from: 'Finovia <noreply@goodiebag.name.ng>',
     to,
     subject,
     html,
