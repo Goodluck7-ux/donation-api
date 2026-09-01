@@ -8,7 +8,7 @@ const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL as string,
 });
 const prisma = new PrismaClient({ adapter });
-  
+
 function requireEnv(key: string): string {
     const value = process.env[key];
     if (!value) {
@@ -49,6 +49,9 @@ export const auth = betterAuth({
     trustedOrigins: [
         process.env.FRONTEND_URL ?? 'http://localhost:3001',
         'http://localhost:3000',
+        'https://donation-ms-gamma.vercel.app',
+        'https://goodiebag.name.ng',
+        'https://www.goodiebag.name.ng',
     ],
 
     advanced: {

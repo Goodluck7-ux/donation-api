@@ -10,8 +10,15 @@ setDefaultResultOrder('ipv4first');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bodyParser: false });
+  const allowedOrigins = [
+    process.env.FRONTEND_URL ?? 'http://localhost:3001',
+    'https://donation-ms-gamma.vercel.app',
+    'https://goodiebag.name.ng',
+    'https://www.goodiebag.name.ng',
+  ].map((url) => url.replace(/\/$/, ''));
+
   app.enableCors({
-    origin: (process.env.FRONTEND_URL ?? 'http://localhost:3001').replace(/\/$/, ''),
+    origin: allowedOrigins,
     credentials: true,
   });
 
