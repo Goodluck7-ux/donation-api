@@ -5,6 +5,8 @@ import { CreateDonationDto } from './dto/create-donation.dto';
 import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import { sendEmail } from '../common/email';
 import { ConfigService } from '@nestjs/config';
+import { Public } from '@thallesp/nestjs-better-auth';
+
 
 @Controller('donations')
 export class DonationsController {
@@ -46,6 +48,7 @@ export class DonationsController {
     return this.donationsService.confirmClaim(token);
   }
 
+  @Public()
   @Get('public/recent')
   async getRecentPublicDonations() {
     return this.donationsService.getRecentPublicDonations();

@@ -6,6 +6,7 @@ import { UpdateCampaignStatusDto } from './dto/update-campaign-status.dto';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { UpdateCampaignDto } from './dto/update-campaign.dto';
+import { Public } from '@thallesp/nestjs-better-auth';
 
 @Controller('campaigns')
 export class CampaignsController {
@@ -42,6 +43,8 @@ export class CampaignsController {
     return this.campaignsService.findOne(id);
   }
 
+
+  @Public()
   @Get('public/stats')
   async getPublicStats() {
     return this.campaignsService.getPublicStats();
