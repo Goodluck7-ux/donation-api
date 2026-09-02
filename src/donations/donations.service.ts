@@ -125,4 +125,14 @@ export class DonationsService {
             createdAt: d.createdAt,
         }));
     }
+
+    async getAllForAdmin() {
+        return this.prisma.donation.findMany({
+            orderBy: { createdAt: 'desc' },
+            include: {
+                campaign: { select: { title: true, id: true } },
+                donor: { select: { name: true, email: true } },
+            },
+        });
+    }
 }

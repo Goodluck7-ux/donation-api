@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Query } from '@nestjs/common';
+import { Controller, Post, Get, Body, Query, UseGuards } from '@nestjs/common';
 import { Session, type UserSession, OptionalAuth } from '@thallesp/nestjs-better-auth';
 import { DonationsService } from './donations.service';
 import { CreateDonationDto } from './dto/create-donation.dto';
@@ -6,6 +6,8 @@ import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import { sendEmail } from '../common/email';
 import { ConfigService } from '@nestjs/config';
 import { Public } from '@thallesp/nestjs-better-auth';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { RolesGuard } from 'src/common/guards/roles.guard';
 
 
 @Controller('donations')
@@ -54,5 +56,11 @@ export class DonationsController {
     return this.donationsService.getRecentPublicDonations();
   }
 
+  @Get('admin/all')
+  @Roles('PLATFORM_ADMIN', 'ORG_ADMIN', 'CAMPAIGN_MANAGER')
+  @UseGuards(RolesGuard)
+  getAllForAdmin() {
+    return this.donationsService.getAllForAdmin();
+  }
 
 }
