@@ -51,6 +51,7 @@ model User {
   email         String    @unique
   emailVerified Boolean   @default(false)
   name          String?
+  image         String?
   role          Role      @default(DONOR)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

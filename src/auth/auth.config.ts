@@ -1,8 +1,11 @@
+import dotenv from 'dotenv';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { PrismaClient } from '../../generated/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { sendEmail } from '../common/email';
+
+dotenv.config({ path: '.env.txt' });
 
 const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL as string,
@@ -56,8 +59,8 @@ export const auth = betterAuth({
 
     advanced: {
         defaultCookieAttributes: {
-            sameSite: 'none',
-            secure: true,
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            secure: process.env.NODE_ENV === 'production',
         },
     },
 
